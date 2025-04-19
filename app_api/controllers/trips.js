@@ -131,10 +131,27 @@ const tripsUpdateTrip = async(req, res) => {
     };
 
 
+    //4/19/2025 Add Delete
+    const tripsDeleteOne = async (req, res) => {
+        try {
+          const tripCode = req.params.tripCode;
+          const deletedTrip = await Trip.findOneAndDelete({ code: tripCode });
+      
+          if (!deletedTrip) {
+            return res.status(404).json({ message: "Trip not found" });
+          }
+      
+          res.status(204).json(null); // 204 means No Content
+        } catch (err) {
+          res.status(500).json({ message: "Error deleting trip", error: err });
+        }
+    };
+
 
 module.exports = {
     tripsList,
     tripsFindByCode,
     tripsAddTrip,
-    tripsUpdateTrip
+    tripsUpdateTrip,
+    tripsDeleteOne
 };
