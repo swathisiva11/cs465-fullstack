@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { Trip } from '../models/trip';
 import { AuthenticationService } from '../services/authentication.service'; 
 
+import { TripDataService } from '../services/trip-data.service';
+
 @Component({ 
   selector: 'app-trip-card', 
   standalone: true, 
@@ -18,7 +20,8 @@ export class TripCardComponent implements OnInit {
 
   constructor( 
     private router: Router, 
-    private authenticationService: AuthenticationService 
+    private authenticationService: AuthenticationService,
+    private tripService: TripDataService
     ) {} 
   
   ngOnInit(): void { 
@@ -33,6 +36,16 @@ export class TripCardComponent implements OnInit {
     localStorage.removeItem('tripCode');
     localStorage.setItem('tripCode', trip.code);
     this.router.navigate(['edit-trip']);
+  }
+
+  //On delete
+  public onDelete(): void {
+    if (confirm(`Are you sure you want to delete the trip "${this.trip.name}"?`)) {
+      this.tripService.deleteTrip(this.trip.code).subscribe(() => {
+        alert('Trip deleted successfully!');
+        window.location.reload(); // Simple way to refresh the list
+      });
+    }
   }
 
 
