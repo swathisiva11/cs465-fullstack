@@ -11,9 +11,16 @@ const connect = () => {
 } 
  
 // Monitor connection events 
-mongoose.connection.on('connected', () => { 
+/* mongoose.connection.on('connected', () => { 
     console.log(`Mongoose connected to ${dbURI}`); 
-}); 
+});  */
+
+
+mongoose.connection.on('connected', () => {
+  if (process.env.NODE_ENV !== 'test') {
+    console.log(`Mongoose connected to ${dbURI}`);
+  }
+});
  
 mongoose.connection.on('error', err => { 
     console.log('Mongoose connection error: ', err); 

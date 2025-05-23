@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { HttpClientTestingModule } from '@angular/common/http/testing'; // Import HttpClientTestingModule
 import { TripListingComponent } from './trip-listing.component';
 
 describe('TripListingComponent', () => {
@@ -8,7 +8,7 @@ describe('TripListingComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TripListingComponent]
+      imports: [TripListingComponent, HttpClientTestingModule]
     })
     .compileComponents();
 
@@ -21,3 +21,5 @@ describe('TripListingComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+
+

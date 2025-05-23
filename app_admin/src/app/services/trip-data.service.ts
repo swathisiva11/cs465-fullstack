@@ -57,6 +57,12 @@ export class TripDataService {
     return this.handleAuthAPICall('register', user, passwd); 
   }
 
+
+  //Adding editTrip
+  editTrip(trip: Trip): Observable<Trip> {
+  return this.http.put<Trip>(`/api/trips/${trip._id}`, trip);
+}
+
    // helper method to process both login and register methods 
    handleAuthAPICall(endpoint: string, user: User, passwd: string) : 
    Observable<AuthResponse> { 

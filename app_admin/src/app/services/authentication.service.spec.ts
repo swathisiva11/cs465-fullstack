@@ -1,16 +1,16 @@
 import { TestBed } from '@angular/core/testing';
-
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { AuthenticationService } from './authentication.service';
 
 describe('AuthenticationService', () => {
-  let service: AuthenticationService;
-
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(AuthenticationService);
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule]
+    });
   });
 
   it('should be created', () => {
+    const service = TestBed.inject(AuthenticationService);
     expect(service).toBeTruthy();
   });
 });
