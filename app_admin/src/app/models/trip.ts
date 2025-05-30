@@ -7,5 +7,6 @@ export interface Trip{
     resort: string,
     perPerson: string,
     image: string,
-    description: string
+    description: string, 
+    rank?: number;          // Adding optional rank score (only present in search results)
 }

@@ -9,12 +9,12 @@ import { Trip } from '../models/trip';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../services/authentication.service'; 
 
-
+import { FormsModule } from '@angular/forms';
 
 @Component({ 
   selector: 'app-trip-listing', 
   standalone: true, 
-  imports: [CommonModule, TripCardComponent], 
+  imports: [CommonModule, TripCardComponent, FormsModule], 
   templateUrl: './trip-listing.component.html', 
   styleUrl: './trip-listing.component.css', 
   providers: [TripDataService]
@@ -71,6 +71,33 @@ export class TripListingComponent implements OnInit {
 
 
   } 
+
+  searchTerm: string = '';
+  public searchTrips(): void {
+  const trimmed = this.searchTerm.trim();
+
+  if (!trimmed) {
+    this.getStuff(); // Fallback to default if empty
+    return;
+  }
+
+  this.tripDataService.searchTrips(trimmed)
+    .subscribe({
+      next: (results: Trip[]) => {
+        this.trips = results;
+        if (results.length > 0) {
+          this.message = `Found ${results.length} trip(s) matching "${this.searchTerm}".`;
+        } else {
+          this.message = `No trips found for "${this.searchTerm}".`;
+        }
+      },
+      error: (err) => {
+        console.error('Search error:', err);
+        this.message = 'An error occurred while searching.';
+        this.trips = [];
+      }
+    });
+}
 
   ngOnInit(): void {
     console.log('ngOnInit');

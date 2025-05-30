@@ -14,7 +14,8 @@ import { TripDataService } from '../services/trip-data.service';
   styleUrl: './trip-card.component.css' 
 }) 
 export class TripCardComponent implements OnInit { 
-  @Input('trip') trip: any; 
+  //@Input('trip') trip: any; 
+   @Input('trip') trip!: Trip; // Ensure strong typing
 
   //constructor(private router: Router) {} 
 
@@ -48,5 +49,9 @@ export class TripCardComponent implements OnInit {
     }
   }
 
+  // create star icons based on rank
+  getStars(rank: number): number[] {
+    return Array(rank).fill(0);
+  }
 
 } 

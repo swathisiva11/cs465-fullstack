@@ -1,9 +1,27 @@
-<!-- <pre>{{ trips | json }}</pre> -->
-<div *ngIf="isLoggedIn()">
-    <button (click)="addTrip()" class="btn btn-info">Add Trip</button>
+<!-- Search bar should be on top -->
+<div class="search-bar p-4">
+  <input type="text"
+         [(ngModel)]="searchTerm"
+         placeholder="Search for trips..."
+         class="p-2 border rounded w-64 mr-2" />
+
+  <button (click)="searchTrips()"
+          class="bg-blue-500 text-white px-4 py-2 rounded">
+    Search
+  </button>
+</div>
+
+<!-- Show status message -->
+<p class="text-sm text-gray-600 px-4">{{ message }}</p>
+
+<!-- Show Add Trip button only if logged in -->
+<div *ngIf="isLoggedIn()" class="p-4">
+  <button (click)="addTrip()" class="btn btn-info">Add Trip</button>
 </div> 
-<div class="row"> 
-    <div *ngFor="let trip of trips" class="col-md-4"> 
-        <app-trip-card [trip]="trip" class="card-deck mt-2"></app-trip-card> 
-    </div> 
- </div> 
+
+<!-- Display trips -->
+<div class="row px-4"> 
+  <div *ngFor="let trip of trips" class="col-md-4"> 
+    <app-trip-card [trip]="trip" class="card-deck mt-2"></app-trip-card> 
+  </div> 
+</div>

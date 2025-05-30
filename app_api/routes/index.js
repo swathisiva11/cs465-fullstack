@@ -66,6 +66,12 @@ router
     //.post(tripsController.tripsAddTrip);
     .post(authenticateJWT, tripsController.tripsAddTrip);   //post method adds a trip
 
+// Keyword-based search endpoint
+router
+    .route('/trips/search')
+    .get(tripsController.searchAndRankTrips); 
+
+
 //GET method routes tripsfindbycode - requires parameter
 router
     .route('/trips/:tripCode')
@@ -73,6 +79,7 @@ router
     //.put(tripsController.tripsUpdateTrip);
     .put(authenticateJWT, tripsController.tripsUpdateTrip)
     .delete(tripsController.tripsDeleteOne);
+
 
 
 module.exports = router;

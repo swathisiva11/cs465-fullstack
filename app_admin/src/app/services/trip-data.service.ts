@@ -78,5 +78,11 @@ export class TripDataService {
      }
 
 
+// Search trips by keyword and get ranked results
+searchTrips(query: string): Observable<Trip[]> {
+  const encodedQuery = encodeURIComponent(query);
+  return this.http.get<Trip[]>(`${this.baseUrl}/trips/search?q=${encodedQuery}`);
+}
+
 
 }
