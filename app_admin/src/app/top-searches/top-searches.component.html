@@ -1,0 +1,12 @@
+<h3 class="mt-5">Trending Destinations</h3>
+
+<ul *ngIf="topSearches.length > 0; else noData">
+  <li *ngFor="let item of topSearches">
+    {{ item._id }} — {{ item.count }} searches
+  </li>
+</ul>
+
+<ng-template #noData>
+  <p>No trending destinations yet. Try searching a few terms.</p>
+</ng-template>
+

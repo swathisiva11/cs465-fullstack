@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const Trip = require('../models/travlr'); //register model
 const Model = mongoose.model('trips');
+const SearchLog = require('../models/searchLog'); // New: import search log model
+
 
 // Get: /trips - list all the trips
 const tripsList = async(req, res) => {
@@ -95,6 +97,8 @@ const searchAndRankTrips = async (req, res) => {
   }
 
   try {
+     // Log the search query
+    await SearchLog.create({ term: query });
     const trips = await Model.find({}).exec();
 
     const scoredTrips = trips.map(trip => {
@@ -126,44 +130,19 @@ const searchAndRankTrips = async (req, res) => {
 };
 
 
-
-
-
-const searchAndRankTrips_bkup = async (req, res) => {
-    const query = req.query.q?.toLowerCase();
-
-    if (!query) {
-        return res.status(400).json({ message: "Missing search query" });
-    }
-
-    console.log("Query:", query);
-
-    try {
-        const trips = await Model.find({}).exec();
-
-        const scoredTrips = trips.map(trip => {
-            let score = 0;
-
-            if (trip.name && trip.name.toLowerCase().includes(query)) score += 2;
-            if (trip.resort && trip.resort.toLowerCase().includes(query)) score += 1;
-            if (trip.description && trip.description.toLowerCase().includes(query)) score += 1;
-
-
-            return { trip, score };
-        });
-
-        console.log(`Trip: ${trip.name}, Name Match: ${nameMatch}, Resort Match: ${resortMatch}, Description Match: ${descriptionMatch}`);
-
-
-        const filtered = scoredTrips
-            .filter(entry => entry.score > 0)
-            .sort((a, b) => b.score - a.score)
-            .map(entry => entry.trip);
-
-        return res.status(200).json(filtered);
-    } catch (err) {
-        return res.status(500).json({ message: "Search failed", error: err });
-    }
+// GET: /trips/topsearches - Get top 5 most searched terms
+const topSearches = async (req, res) => {
+  try {
+    const results = await SearchLog.aggregate([
+      { $group: { _id: "$term", count: { $sum: 1 } } },
+      { $sort: { count: -1 } },
+      { $limit: 5 }
+    ]);
+    res.status(200).json(results);
+  } catch (err) {
+    console.error("Top searches error:", err);
+    res.status(500).json({ message: "Failed to fetch top searches", error: err.message });
+  }
 };
 
 module.exports = {
@@ -172,5 +151,6 @@ module.exports = {
     tripsAddTrip,
     tripsUpdateTrip,
     tripsDeleteOne,
-    searchAndRankTrips
+    searchAndRankTrips,
+    topSearches // Exporting new function
 };

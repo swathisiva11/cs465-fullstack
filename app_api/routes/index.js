@@ -55,7 +55,7 @@ const verified = jwt.verify(token, process.env.JWT_SECRET, (err,
 
 
 
-
+//Auth Routes
  router.route("/register").post(authController.register);
  router.route("/login").post(authController.login);
 
@@ -70,6 +70,12 @@ router
 router
     .route('/trips/search')
     .get(tripsController.searchAndRankTrips); 
+
+// Top 5 searched terms route 
+router
+    .route("/trips/topsearches")
+    .get(tripsController.topSearches);
+
 
 
 //GET method routes tripsfindbycode - requires parameter
