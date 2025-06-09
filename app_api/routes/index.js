@@ -1,3 +1,6 @@
+//Swathi Siva - Added auth and search tracking routes
+
+
 const jwt = require('jsonwebtoken'); // Enable JSON Web Tokens 
 const express = require("express"); // Express app
 const router = express.Router();   // Router logic
@@ -52,14 +55,12 @@ const verified = jwt.verify(token, process.env.JWT_SECRET, (err,
         next(); // We need to continue or this will hang forever 
     }
 
-
-
-
 //Auth Routes
- router.route("/register").post(authController.register);
- router.route("/login").post(authController.login);
+ router.route("/register").post(authController.register);  // Handles user registration
+ router.route("/login").post(authController.login);   //handles user login
 
 //define route for our trips endpoint
+//Fetch list of trips
 router
     .route("/trips")
     .get(tripsController.tripsList)    // get method routes triplist
@@ -67,6 +68,7 @@ router
     .post(authenticateJWT, tripsController.tripsAddTrip);   //post method adds a trip
 
 // Keyword-based search endpoint
+//Enables front end to show trending search queries
 router
     .route('/trips/search')
     .get(tripsController.searchAndRankTrips); 
@@ -79,10 +81,10 @@ router
 
 
 //GET method routes tripsfindbycode - requires parameter
+//Trip lookup, update and delete by tripCode
 router
     .route('/trips/:tripCode')
     .get(tripsController.tripsFindByCode)
-    //.put(tripsController.tripsUpdateTrip);
     .put(authenticateJWT, tripsController.tripsUpdateTrip)
     .delete(tripsController.tripsDeleteOne);
 

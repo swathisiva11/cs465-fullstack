@@ -1,11 +1,15 @@
+<!-- Section Title -->
+<!-- Displays a heading for the trending search terms section -->
 <h3 class="mt-5">Trending Destinations</h3>
 
+<!-- Conditional Rendering of Search Results -->
+<!-- If the 'topSearches' array has data, render a list of search terms -->
 <ul *ngIf="topSearches.length > 0; else noData">
   <li *ngFor="let item of topSearches">
     {{ item._id }} — {{ item.count }} searches
   </li>
 </ul>
-
+<!-- Display this when 'topSearches' is empty -->
 <ng-template #noData>
   <p>No trending destinations yet. Try searching a few terms.</p>
 </ng-template>

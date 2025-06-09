@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const host = process.env.DB_HOST || '127.0.0.1'; 
 const dbURI = `mongodb://${host}/travlr`; 
 const readLine = require('readline'); 
+// Import SearchLog model to ensure schema is registered with Mongoose
+// This allows the search log model to be used 
 require('./searchLog');
  
 // Build the connection string and set the connection timeout.  
@@ -12,21 +14,19 @@ const connect = () => {
 } 
  
 // Monitor connection events 
-/* mongoose.connection.on('connected', () => { 
-    console.log(`Mongoose connected to ${dbURI}`); 
-});  */
-
-
+// We suppress logs during test environments for cleaner output
 mongoose.connection.on('connected', () => {
   if (process.env.NODE_ENV !== 'test') {
     console.log(`Mongoose connected to ${dbURI}`);
   }
 });
- 
+
+// Event listener: Log connection errors to console
 mongoose.connection.on('error', err => { 
     console.log('Mongoose connection error: ', err); 
 }); 
- 
+
+// Event listener: Log when Mongoose disconnects
 mongoose.connection.on('disconnected', () => { 
     console.log('Mongoose disconnected'); 
 }); 

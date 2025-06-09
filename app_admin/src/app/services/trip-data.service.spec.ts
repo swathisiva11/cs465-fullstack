@@ -1,3 +1,8 @@
+// Test the TripDataService methods (addTrip, editTrip, deleteTrip) 
+// Import Angular testing utilities
+// Import HTTP testing tools to mock API calls
+// Import the TripDataService to be tested
+// Import the Trip model used in the tests
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TripDataService } from './trip-data.service';
